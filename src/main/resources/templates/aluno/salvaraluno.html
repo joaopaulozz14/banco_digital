@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layoutprincipal.html}">
+
+<head>
+    <title>Salvar Aluno</title>
+</head>
+
+<body>
+    <div class=" container" layout:fragment="conteudoprincipal">
+        <div class="p-4 p-md-5 mt-4 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <div class="col-lg-6 px-0">
+                <h1 class="display-4 fst-italic">Salvar Aluno</h1>
+                <p class="lead my-3">Preencha os dados do Aluno.</p>
+                <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>
+            </div>
+        </div>
+
+        <form action="/salvaraluno" method="post" th:object="${aluno}">
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" th:field="*{nome}">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('nome')}" th:text="${error}" class="text-danger"></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" class="form-control" th:field="*{cpf}" aria-describedby="cpfHelp">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('cpf')}" th:text="${error}" class="text-danger"></li>
+                    </ul>
+                    <div id="cpfHelp" class="form-text">Nunca compartilhe seu CPF com ninguém.</div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                    <input type="date" class="form-control" th:field="*{dataNascimento}">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('dataNascimento')}" th:text="${error}"
+                            class="text-danger"></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <label for="dataIngresso" class="form-label">Data de Ingresso</label>
+                    <input type="date" class="form-control" th:field="*{dataIngresso}">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('dataIngresso')}" th:text="${error}" class="text-danger">
+                        </li>
+                    </ul>
+                </div>
+               
+                 <div class="col-md-4">
+                    <label for="ra" class="form-label">RA</label>
+                    <input type="text" class="form-control" th:field="*{ra}" aria-describedby="raHelp">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('ra')}" th:text="${error}" class="text-danger"></li>
+                    </ul>
+                    <div id="raHelp" class="form-text">Preencimento obrigatório.</div>
+                </div>
+                 <div class="col-md-6">
+                    <label for="curso" class="form-label">Curso</label>
+                    <input type="text" class="form-control" th:field="*{curso}" aria-describedby="cursoHelp">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('curso')}" th:text="${error}" class="text-danger"></li>
+                    </ul>
+                    <div id="cursoHelp" class="form-text">Preencimento obrigatório.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="emailInstitucional" class="form-label">E-mail Institucional</label>
+                    <input type="email" class="form-control" th:field="*{emailInstitucional}" aria-describedby="emailInstitucionalHelp">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('emailInstitucional')}" th:text="${error}" class="text-danger"></li>
+                    </ul>
+                    <div id="emailInstitucionalHelp" class="form-text">Preencimento obrigatório.</div>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>
