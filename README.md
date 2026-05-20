@@ -22,10 +22,13 @@ ATIVIDADE 08: SISTEMA DE BANCO DIGITAL Cliente, Gerente, Cartão e Conta. Obs: C
 	
 - Cartão; (id, numero, cvc, validade)
 	CartaoCredito (limite), CartaoDebito ()
-Relacionamentos:
 
-- Um Cliente pode possuir várias contas ()
-- Várias contas podem pertencer a um cliente ()
+> Relacionamentos:
+
+- Um Cliente pode possuir várias contas (OneToMany)
+- Várias contas podem pertencer a um cliente (ManyToOne)
+- Varios Cartões pertencem a uma conta (ManyToOne)
+- Uma Conta possui vários cartões (OneToMany)
 
   
 > Fluxo:
@@ -53,3 +56,11 @@ Relacionamentos:
 		
 - Factory Method (Classe: Factory. Método: criar: if = POUPANCA, return new Poupanca);
 	[Factory para criar contas]
+
+> Passo a Passo
+
+- Criar Model (Atributos, Validação, Relacionamentos);
+- Criar Repository (Métodos do Spring Data JPA. É utilizado na Service);
+- Criar Service (Usar 'Try...Catch'. @Autowired. Usa Repository);
+- Criar Controller (CRUD - Gerente, Cliente. Definir Rotas: @GetMapping('nome_rota'). Retornar HTML. Chama o Service)
+- Criar Views/Thymeleaf (Telas: Homepage [Navbar: cliente, gerente] | Cliente [CRUD] | Gerente [CRUD])
