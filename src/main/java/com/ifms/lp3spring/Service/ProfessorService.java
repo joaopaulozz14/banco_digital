@@ -1,12 +1,12 @@
-package com.ifms.lp3spring.Service;
+package com.ifms.lp3spring.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifms.lp3spring.Repository.ProfessorRepository;
 import com.ifms.lp3spring.model.pessoa.GerenteModel;
+import com.ifms.lp3spring.repository.ProfessorRepository;
 
 @Service
 public class ProfessorService {

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -22,12 +23,11 @@ import jakarta.validation.constraints.Size;
 @Table(name = "pessoa")
 public abstract class PessoaModel {
     @Id
-    @GeneratedValue
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idPessoa;
+
     @NotBlank
     @Length(min = 10, max = 100)
-
     @NotNull
     private String nome;
 

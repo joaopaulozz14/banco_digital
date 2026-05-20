@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -11,18 +12,18 @@ import jakarta.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "carta")
+@Table(name = "cartao")
 public class CartaoModel {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idCartao;
 
     private Date validade;
 
     private String cvv;
 
-    
+    public CartaoModel(){}
 
     public CartaoModel(Long idCartao, Date validade, String cvv) {
         this.idCartao = idCartao;

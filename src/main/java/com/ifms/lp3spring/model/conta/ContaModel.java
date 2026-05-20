@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "conta")
 
-public class ContaModel {
+public abstract class ContaModel {
     @Id
     @GeneratedValue
     private Long idConta;

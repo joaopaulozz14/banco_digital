@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ifms.lp3spring.Service.ProfessorService;
 import com.ifms.lp3spring.model.pessoa.GerenteModel;
+import com.ifms.lp3spring.service.ProfessorService;
 
 import jakarta.validation.Valid;
 
