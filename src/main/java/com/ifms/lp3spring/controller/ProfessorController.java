@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ifms.lp3spring.Service.ProfessorService;
-import com.ifms.lp3spring.model.ProfessorModel;
+import com.ifms.lp3spring.model.pessoa.GerenteModel;
 
 import jakarta.validation.Valid;
 
@@ -21,11 +21,11 @@ public class ProfessorController {
 
     @GetMapping("/salvarprofessor")
     public ModelAndView getSalvar() {
-        return new ModelAndView("professor/salvarprofessor", "professor", new ProfessorModel());
+        return new ModelAndView("professor/salvarprofessor", "professor", new GerenteModel());
     }
     
     @PostMapping("/salvarprofessor")
-    public String postSalvar(@Valid @ModelAttribute("professor") ProfessorModel professor, BindingResult result) {
+    public String postSalvar(@Valid @ModelAttribute("professor") GerenteModel professor, BindingResult result) {
         if (result.hasErrors()) {
             return "professor/salvarprofessor";
         }
@@ -47,11 +47,11 @@ public class ProfessorController {
 
     @GetMapping("/salvarprofessor/{id}")
     public ModelAndView buscarPorId(@ModelAttribute("id") Long id) {
-        ProfessorModel professor = professorService.buscarPorId(id);
+        GerenteModel professor = professorService.buscarPorId(id);
         if (professor==null) {
-            professor = new ProfessorModel();
+            professor = new GerenteModel();
         }
-        return new ModelAndView("/professor/salvarprofessor", "professor", new ProfessorModel());
+        return new ModelAndView("/professor/salvarprofessor", "professor", new GerenteModel());
     }
 
     public ProfessorService getProfessorService() {

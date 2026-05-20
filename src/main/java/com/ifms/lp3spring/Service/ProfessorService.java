@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ifms.lp3spring.Repository.ProfessorRepository;
-import com.ifms.lp3spring.model.ProfessorModel;
+import com.ifms.lp3spring.model.pessoa.GerenteModel;
 
 @Service
 public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public String inserir (ProfessorModel professor) {
+    public String inserir (GerenteModel professor) {
         try {
             professorRepository.save(professor);
         } catch (Exception e) {
@@ -22,7 +22,7 @@ public class ProfessorService {
         return "Salvo com Sucesso";
     }
     
-    public List<ProfessorModel> buscarTodos() {
+    public List<GerenteModel> buscarTodos() {
         return professorRepository.findAll();
     }
 
@@ -35,7 +35,7 @@ public class ProfessorService {
         return "Removido com Sucesso";
     }
     
-    public ProfessorModel buscarPorId(Long id) {
+    public GerenteModel buscarPorId(Long id) {
         return professorRepository.findById(id).orElse(null);
     }
 
