@@ -1,38 +1,44 @@
 package com.ifms.lp3spring.model.pessoa;
 
+import java.util.ArrayList;
 import java.util.Date;
-
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import com.ifms.lp3spring.model.conta.ContaModel;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "idPessoa")
 @Table(name = "cliente")
 public class ClienteModel extends PessoaModel {
 
-
-    @NotNull
+    @PositiveOrZero(message = "A renda deve ser maior ou igual a 0")
+    @Column(name = "rendaCliente")
     private double renda;
+    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContaModel> contas = new ArrayList<>();
 
-    public ClienteModel(String nome, Long cpf, String telefone, Date dataNascimento, double renda) {
+    protected ClienteModel() {}
+
+    public ClienteModel(String nome, String cpf, String telefone, Date dataNascimento, double renda) {
         super(nome, cpf, telefone, dataNascimento);
-
         this.renda = renda;
     }
 
-    public ClienteModel() {
+    // Método utilitário essencial para o Cascade funcionar perfeitamente
+    public void adicionarConta(ContaModel conta) {
+        this.contas.add(conta);
+        conta.setCliente(this); 
     }
 
-
-    public double getRenda() {
-        return renda;
+    public void removerConta(ContaModel conta) {
+        this.contas.remove(conta);
+        conta.setCliente(null);
     }
 
-    public void setRenda(double renda) {
-        this.renda = renda;
-    }
-
+    public double getRenda() { return renda; }
+    public void setRenda(double renda) { this.renda = renda; }
+    public List<ContaModel> getContas() { return contas; }
+    // Removido o setContas(List) para proteger o gerenciamento do Hibernate
 }

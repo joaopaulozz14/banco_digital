@@ -1,56 +1,63 @@
 package com.ifms.lp3spring.model.conta;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+import com.ifms.lp3spring.model.cartao.CartaoModel;
+import com.ifms.lp3spring.model.pessoa.ClienteModel;
+import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "conta")
-
 public abstract class ContaModel {
+    
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConta;
 
-
-    private double saldo_atual;
+    private double saldoAtual; 
 
     private double fatura;
 
-    public ContaModel(){}
-    public ContaModel(Long idConta, double saldo_atual, double fatura) {
-        this.idConta = idConta;
-        this.saldo_atual = saldo_atual;
-        this.fatura = fatura;
-    }
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private ClienteModel cliente;
 
-    public Long getIdConta() {
-        return idConta;
-    }
-
-    public void setIdConta(Long idConta) {
-        this.idConta = idConta;
-    }
-
-    public double getSaldo_atual() {
-        return saldo_atual;
-    }
-
-    public void setSaldo_atual(double saldo_atual) {
-        this.saldo_atual = saldo_atual;
-    }
-
-    public double getFatura() {
-        return fatura;
-    }
-
-    public void setFatura(double fatura) {
-        this.fatura = fatura;
-    }
-
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartaoModel> cartoes = new ArrayList<>();
     
+    protected ContaModel(){} // Alterado para protegido por boa prática
+    
+    // Removido idConta do construtor público
+    public ContaModel(double saldoAtual, double fatura) {
+        this.saldoAtual = saldoAtual;
+        this.fatura = fatura;
+    }
+
+    // Métodos Utilitários para sincronização dos Cartões
+    public void adicionarCartao(CartaoModel cartao) {
+        this.cartoes.add(cartao);
+        cartao.setConta(this);
+    }
+
+    public void removerCartao(CartaoModel cartao) {
+        this.cartoes.remove(cartao);
+        cartao.setConta(null);
+    }
+
+    // GETTERS E SETTERS
+    public Long getIdConta() { return idConta; }
+    public void setIdConta(Long idConta) { this.idConta = idConta; }
+
+    public double getSaldoAtual() { return saldoAtual; }
+    public void setSaldoAtual(double saldoAtual) { this.saldoAtual = saldoAtual; }
+
+    public double getFatura() { return fatura; }
+    public void setFatura(double fatura) { this.fatura = fatura; }
+
+    public ClienteModel getCliente() { return cliente; }
+    public void setCliente(ClienteModel cliente) { this.cliente = cliente; }
+
+    public List<CartaoModel> getCartoes() { return cartoes; }
+    // Removido setCartoes para proteger o gerenciamento da coleção pelo Hibernate
 }

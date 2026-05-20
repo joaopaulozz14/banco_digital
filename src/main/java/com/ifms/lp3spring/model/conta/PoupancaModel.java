@@ -1,27 +1,26 @@
 package com.ifms.lp3spring.model.conta;
 
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "idConta")
 @Table(name = "conta_poupanca")
 public class PoupancaModel extends ContaModel {
 
-    @NotNull
+    @PositiveOrZero(message = "O rendimento deve ser maior ou igual a zero")
     private double rendimento;
 
-   
+    protected PoupancaModel() {}
 
-    public PoupancaModel(Long idConta, double saldo_atual, double fatura, @NotNull double rendimento) {
-        super(idConta, saldo_atual, fatura);
+    // Construtor corrigido sem o parâmetro idConta
+    public PoupancaModel(double saldoAtual, double fatura, double rendimento) {
+        super(saldoAtual, fatura);
         this.rendimento = rendimento;
     }
-    public PoupancaModel() {
 
-    }
-
+    public double getRendimento() { return rendimento; }
+    public void setRendimento(double rendimento) { this.rendimento = rendimento; }
 }
