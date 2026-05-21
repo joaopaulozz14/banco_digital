@@ -57,6 +57,14 @@ ATIVIDADE 08: SISTEMA DE BANCO DIGITAL Cliente, Gerente, Cartão e Conta. Obs: C
 - Factory Method (Classe: Factory. Método: criar: if = POUPANCA, return new Poupanca);
 	[Factory para criar contas]
 
+> Fluxo do Strategy + Simple Factory:
+
+1- O ClienteService recebe o cliente (instância da model) e verifica na Factory: "Com base na renda, qual classe eu devo usar?"
+2- A Factory executa o if (renda > 2000), instancia o objeto correto (new LimiteAltoStrategy()) e retorna através da interface.
+3- O ClienteService recebe esse objeto e executa o Strategy: strategy.calcular(...)
+
+[Se quiser adicionar uma nova regra - você não precisará alterar o 'Service', mas sim criar uma nova 'strategy' e adicioná-la na 'factory']
+
 > Passo a Passo
 
 - Criar Model (Atributos, Validação, Relacionamentos);
