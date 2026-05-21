@@ -25,7 +25,7 @@ public class ClienteService {
             double limiteCalculado = strategy.calcular(cliente.getRenda());
             
             System.out.println("Limite de crédito sugerido pelo Strategy: R$ " + limiteCalculado);
-            // Aqui você poderia, por exemplo, salvar esse limite em uma conta corrente associada
+            // como salvar esse limite em uma conta corrente associada?
 
             return clienteRepository.save(cliente);
         } catch (Exception e) {
@@ -58,6 +58,15 @@ public class ClienteService {
             throw new Exception("Falha na exclusão do cliente.");
         }
     }
+    
+    // BUSCAR PELO ID
+	public ClienteModel buscarId(long id) throws Exception {
+		try {
+			return clienteRepository.findById(id).orElse(null);
+		}catch(Exception e) {
+			throw new Exception("Error");
+		}
+	}
 
     //Getters e Setters
 	public ClienteRepository getClienteRepository() {
