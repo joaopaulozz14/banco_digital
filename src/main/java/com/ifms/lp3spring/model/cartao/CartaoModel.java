@@ -1,6 +1,10 @@
 package com.ifms.lp3spring.model.cartao;
 
 import java.time.LocalDate;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.ifms.lp3spring.model.conta.ContaModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
@@ -25,17 +29,21 @@ public abstract class CartaoModel { // Alterado para abstract para nao permitir 
     @Pattern(regexp = "^\\d{3,4}$", message = "O CVV deve conter 3 ou 4 dígitos numéricos") // Validação de formato para segurança
     @Column(length = 4)
     private String cvv;
-
-    @ManyToOne
-    @JoinColumn(name = "conta_id", nullable = false)
+    
+    @NotBlank(message = "O número do cartão é obrigatório")
+    String numero;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_conta")
+    @Fetch(FetchMode.JOIN)
     private ContaModel conta;
 
-    protected CartaoModel(){} // Construtor padrão protegido para o Hibernate
+    protected CartaoModel(){}
 
-    // Construtor corrigido sem o parâmetro idCartao
-    public CartaoModel(LocalDate validade, String cvv, ContaModel conta) {
+    public CartaoModel(LocalDate validade, String cvv, String numero, ContaModel conta) {
         this.validade = validade;
         this.cvv = cvv;
+        this.numero = numero;
         this.conta = conta;
     }
 
@@ -48,6 +56,9 @@ public abstract class CartaoModel { // Alterado para abstract para nao permitir 
 
     public String getCvv() { return cvv; }
     public void setCvv(String cvv) { this.cvv = cvv; }
+    
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero;}
 
     public ContaModel getConta() { return conta; }
     public void setConta(ContaModel conta) { this.conta = conta; }

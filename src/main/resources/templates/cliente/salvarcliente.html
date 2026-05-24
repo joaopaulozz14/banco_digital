@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layoutprincipal :: estrutura(~{:: #conteudoFormulario})}">
+
+<body>
+
+<div id="conteudoFormulario">
+
+    <h2 th:text="${cliente.idPessoa == null} ? 'Novo Cadastro de Cliente' : 'Atualização de Cliente'"></h2>
+
+    <hr>
+
+    <form th:action="${cliente.idPessoa == null} ? @{/salvarcliente} : @{/editarcliente}"
+          th:object="${cliente}"
+          method="POST">
+
+        <input type="hidden" th:field="*{idPessoa}">
+
+        <!-- ERROS GLOBAIS -->
+
+        <div th:if="${#fields.hasGlobalErrors()}">
+
+            <p class="error"
+               th:each="erro : ${#fields.globalErrors()}"
+               th:text="${erro}">
+            </p>
+
+        </div>
+
+        <!-- NOME -->
+
+        <div class="form-group">
+
+            <label>Nome Completo</label>
+
+            <input type="text"
+                   th:field="*{nome}"
+                   placeholder="Digite o nome completo">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('nome')}"
+                  th:errors="*{nome}">
+            </span>
+
+        </div>
+
+        <!-- CPF -->
+
+        <div class="form-group">
+
+            <label>CPF</label>
+
+            <input type="text"
+                   th:field="*{cpf}"
+                   placeholder="00000000000">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('cpf')}"
+                  th:errors="*{cpf}">
+            </span>
+
+        </div>
+
+        <!-- TELEFONE -->
+
+        <div class="form-group">
+
+            <label>Telefone</label>
+
+            <input type="text"
+                   th:field="*{telefone}"
+                   placeholder="(44) 99999-9999">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('telefone')}"
+                  th:errors="*{telefone}">
+            </span>
+
+        </div>
+
+        <!-- DATA NASCIMENTO -->
+
+        <div class="form-group">
+
+            <label>Data de Nascimento</label>
+
+            <input type="date"
+                   th:field="*{dataNascimento}">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('dataNascimento')}"
+                  th:errors="*{dataNascimento}">
+            </span>
+
+        </div>
+
+        <!-- RENDA -->
+
+        <div class="form-group">
+
+            <label>Renda Mensal</label>
+
+            <input type="number"
+                   step="0.01"
+                   th:field="*{renda}"
+                   placeholder="0.00">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('renda')}"
+                  th:errors="*{renda}">
+            </span>
+
+        </div>
+
+        <br>
+
+        <button type="submit"
+                class="btn btn-success">
+
+            <span th:text="${cliente.idPessoa == null} ? 'Salvar Cliente' : 'Atualizar Cliente'"></span>
+
+        </button>
+
+        <a th:href="@{/buscarcliente}"
+           style="margin-left:15px;">
+            Voltar
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>
+```

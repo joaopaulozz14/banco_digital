@@ -15,7 +15,7 @@ public class DebitoModel extends CartaoModel {
         super();
     }
 
-    public DebitoModel(LocalDate validade, String cvv, ContaModel conta) {
-        super(validade, cvv, conta);
+    public DebitoModel(LocalDate validade, String cvv, String numero, ContaModel conta) {
+        super(validade, cvv, numero, conta);
     }
 }

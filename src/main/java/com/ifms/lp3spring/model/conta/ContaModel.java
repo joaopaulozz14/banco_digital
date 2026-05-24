@@ -2,9 +2,14 @@ package com.ifms.lp3spring.model.conta;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.ifms.lp3spring.model.cartao.CartaoModel;
 import com.ifms.lp3spring.model.pessoa.ClienteModel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -15,20 +20,22 @@ public abstract class ContaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConta;
 
+    @NotNull
     private double saldoAtual; 
 
+    @NotNull
     private double fatura;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_cliente")
+    @Fetch(FetchMode.JOIN)
     private ClienteModel cliente;
 
-    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CartaoModel> cartoes = new ArrayList<>();
     
-    protected ContaModel(){} // Alterado para protegido por boa prática
+    protected ContaModel(){}
     
-    // Removido idConta do construtor público
     public ContaModel(double saldoAtual, double fatura) {
         this.saldoAtual = saldoAtual;
         this.fatura = fatura;
@@ -45,6 +52,50 @@ public abstract class ContaModel {
         cartao.setConta(null);
     }
 
+    // Retorna o tipo de conta;
+    public String getTipoConta() {
+        return this.getClass().getSimpleName();
+    }
+    
+    // Recebe o limite calculado a partir da renda de ContaCorrente
+    public abstract double getLimite();
+    
+    // Depositar valor da conta;
+    public void depositar(double valor) {
+
+        if(valor <= 0) {
+
+            throw new IllegalArgumentException(
+                    "Valor inválido"
+            );
+        }
+
+        this.saldoAtual += valor;
+    }
+    
+    // Sacar valor da conta;
+    public void sacar(double valor) {
+
+        if(valor <= 0) {
+
+            throw new IllegalArgumentException(
+                    "Valor inválido"
+            );
+        }
+
+        double saldoDisponivel =
+                saldoAtual + getLimite();
+
+        if(valor > saldoDisponivel) {
+
+            throw new IllegalArgumentException(
+                    "Saldo insuficiente"
+            );
+        }
+
+        this.saldoAtual -= valor;
+    }
+    
     // GETTERS E SETTERS
     public Long getIdConta() { return idConta; }
     public void setIdConta(Long idConta) { this.idConta = idConta; }

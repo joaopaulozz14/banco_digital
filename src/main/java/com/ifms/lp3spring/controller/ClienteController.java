@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ifms.lp3spring.model.pessoa.ClienteModel;
 import com.ifms.lp3spring.service.ClienteService;
@@ -18,50 +21,115 @@ public class ClienteController {
 	@Autowired
 	ClienteService clienteService;
 
-	// Cadastrar Clientes
-	@PostMapping("/clientes")
-	public String salvar(@Valid ClienteModel cliente) throws Exception {
-		clienteService.inserir(cliente);
-        return "redirect:/salvaraluno";
+	// Listagem de clientes
+	@GetMapping("/buscarcliente")
+	public ModelAndView listar() throws Exception {
+	    List<ClienteModel> clientes =
+	            clienteService.listarTodos();
 
+	    return new ModelAndView(
+	            "cliente/buscarcliente",
+	            "clientes",
+	            clientes
+	    );
 	}
 	
-	//Dar Commit amanhça
-
-	// Listar Clientes
-	@GetMapping("/cliente")
-	public List<ClienteModel> index() throws Exception {
-		try {
-			List<ClienteModel> cliente = clienteService.listarTodos();
-			return cliente;
-		} catch (Exception e) {
-			throw new Exception("error");
-		}
+	// Mostra o formulario para salvar cliente
+	@GetMapping("/salvarcliente")
+	public ModelAndView getSalvar() {
+		return new ModelAndView("cliente/salvarcliente", "cliente", new ClienteModel());
 	}
 	
-	// Deletar Clientes
-	@DeleteMapping("/deleteprofessor/{id}")
-	public String deletar(Long id) throws Exception{
-		try {
+	// Processa acao de salvar
+	@PostMapping("/salvarcliente")
+	public String postSalvar(
+	        @Valid @ModelAttribute("cliente") ClienteModel cliente,
+	        BindingResult result) {
+
+	    if (result.hasErrors()) {
+	        return "cliente/salvarcliente";
+	    }
+
+	    try {
+
+	        clienteService.inserir(cliente);
+
+	        return "redirect:/buscarcliente";
+
+	    } catch (Exception e) {
+
+	        result.reject("erro", e.getMessage());
+
+	        return "cliente/salvarcliente";
+	    }
+	}
+	
+	//Remover cliente pelo id;
+    @GetMapping("/removercliente/{id}")
+    public String deletar(@ModelAttribute("id") Long id) {
+        try {
 			clienteService.remover(id);
-			return "redirect:/salvaraluno";
-		}catch(Exception e) {
-			throw new Exception("Error");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-	
-	// Buscar por ID
-	@GetMapping("/cliente/{id}")
-	public ClienteModel buscarId(Long id) throws Exception{
-		try {
-			ClienteModel cliente = clienteService.buscarId(id);
-			return cliente;
-		}catch(Exception e) {
-			throw new Exception("Erro");
-		}
-	}
+        return "redirect:/buscarcliente";
+    }
+    
+    //Mostrar form de edicao
+    @GetMapping("/editarcliente/{id}")
+    public ModelAndView buscarPorId(@ModelAttribute("id") Long id) throws Exception {
+        ClienteModel cliente = clienteService.buscarId(id);
 
-	
-	
+        if (cliente==null) {
+            cliente = new ClienteModel();
+        }
+        return new ModelAndView("/cliente/editarcliente", "cliente", cliente);
+    }
+    
+    //Processar edicao
+    @PostMapping("/editarcliente")
+    public String postEditar(@Valid @ModelAttribute("cliente") ClienteModel cliente, BindingResult result) {
+        if (result.hasErrors()) {
+            return "cliente/editarcliente";
+        }
+        
+        try {
+			clienteService.editar(cliente);
+		} catch (Exception e) {
+	        result.reject("erro", e.getMessage());
+	        return "cliente/editarcliente";
+		}
+        return "redirect:/buscarcliente";
+    }
+    
+    //Mostrar Relacionamento
+    @GetMapping("/detalhescliente/{id}")
+    public ModelAndView detalhesCliente(@ModelAttribute("id") Long id) throws Exception {
+
+        ClienteModel cliente = clienteService.buscarId(id);
+
+        ModelAndView mv =
+                new ModelAndView(
+                        "cliente/detalhescliente"
+                );
+
+        mv.addObject("cliente", cliente);
+        mv.addObject(
+                "saldoTotal",
+                clienteService.calcularSaldoTotal(cliente)
+        );
+
+        mv.addObject(
+                "limiteTotal",
+                clienteService.calcularLimiteTotal(cliente)
+        );
+
+        return mv;
+        
+        // Fluxo: mapeamento em detalhescliente/id -> ModelAndView (Recebe parametros: 
+        // 'arquivo html', 'dados enviados') -> Usa mv.addObject para chamar services
+    }
+
 
 }

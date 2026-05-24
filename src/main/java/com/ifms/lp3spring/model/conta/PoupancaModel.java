@@ -20,7 +20,14 @@ public class PoupancaModel extends ContaModel {
         super(saldoAtual, fatura);
         this.rendimento = rendimento;
     }
+    
+    
+    @Override
+    public double getLimite() {
 
+        return 0;
+    }
+    
     public double getRendimento() { return rendimento; }
     public void setRendimento(double rendimento) { this.rendimento = rendimento; }
 }

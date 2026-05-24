@@ -1,5 +1,8 @@
 package com.ifms.lp3spring.service;
 
+import com.ifms.lp3spring.model.cartao.CreditoModel;
+import com.ifms.lp3spring.model.conta.ContaModel;
+import com.ifms.lp3spring.model.conta.CorrenteModel;
 import com.ifms.lp3spring.model.pessoa.ClienteModel;
 import com.ifms.lp3spring.repository.ClienteRepository;
 import com.ifms.lp3spring.strategy.CalculoLimiteFactory;
@@ -7,6 +10,7 @@ import com.ifms.lp3spring.strategy.CalculoLimiteStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,17 +24,17 @@ public class ClienteService {
     // INSERIR (Utilizando o Strategy para calcular um limite fictício baseado na renda)
     public ClienteModel inserir(ClienteModel cliente) throws Exception {
         try {
-            // Aplicação do padrão Strategy antes de salvar
+            // Aplicação do padrão Strategy antes de salvar (calcular limite)
             CalculoLimiteStrategy strategy = CalculoLimiteFactory.obterEstrategia(cliente.getRenda());
             double limiteCalculado = strategy.calcular(cliente.getRenda());
             
-            System.out.println("Limite de crédito sugerido pelo Strategy: R$ " + limiteCalculado);
-            // como salvar esse limite em uma conta corrente associada?
-
+            // Criar contaCorrente associada padrão e associar ao cliente
+            CorrenteModel conta = new CorrenteModel(0.0, 0.0, limiteCalculado);
+            cliente.adicionarConta(conta);
+            
             return clienteRepository.save(cliente);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("Error");
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -46,26 +50,64 @@ public class ClienteService {
 
     // REMOVER
     public void remover(Long id) throws Exception {
-        try {
-            // Verifica se o cliente existe antes de tentar deletar
-            if (clienteRepository.existsById(id)) {
-                clienteRepository.deleteById(id);
-            } else {
-                throw new Exception("Cliente inexistente. Não pôde ser removido.");
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao remover cliente: " + e.getMessage());
-            throw new Exception("Falha na exclusão do cliente.");
+
+        if (!clienteRepository.existsById(id)) {
+            throw new Exception("Cliente inexistente");
         }
+
+        clienteRepository.deleteById(id);
     }
+
     
     // BUSCAR PELO ID
-	public ClienteModel buscarId(long id) throws Exception {
+	public ClienteModel buscarId(Long id) throws Exception {
 		try {
 			return clienteRepository.findById(id).orElse(null);
 		}catch(Exception e) {
 			throw new Exception("Error");
 		}
+	}
+	
+	// Editar
+	public ClienteModel editar(ClienteModel cliente) throws Exception {
+
+	    ClienteModel clienteBanco =
+	            clienteRepository.findById(cliente.getIdPessoa())
+	                    .orElseThrow(() ->
+	                            new Exception("Cliente não encontrado"));
+
+	    clienteBanco.setNome(cliente.getNome());
+	    clienteBanco.setCpf(cliente.getCpf());
+	    clienteBanco.setTelefone(cliente.getTelefone());
+	    clienteBanco.setDataNascimento(cliente.getDataNascimento());
+	    clienteBanco.setRenda(cliente.getRenda());
+
+	    return clienteRepository.save(clienteBanco);
+	}
+	
+	
+	// Calcular Saldo do cliente 
+	public double calcularSaldoTotal(
+	        ClienteModel cliente) {
+
+	    return cliente.getContas()
+	            .stream()
+	            .mapToDouble(ContaModel::getSaldoAtual)
+	            .sum(); 
+	    // lista de contas -> converte lista em fluxo de dados -> extrai o valor de saldo de todas as contas
+	    // -> soma -> RESULTADO: Saldo de todas as contas
+	}
+	
+	
+	// Calcular Limite do cliente;
+	public double calcularLimiteTotal(
+	        ClienteModel cliente) {
+
+	    return cliente.getContas()
+	            .stream()
+	            .mapToDouble(ContaModel::getLimite)
+	            .sum();
+	    // mesma logica, mas soma o limite ao inves do saldo.
 	}
 
     //Getters e Setters

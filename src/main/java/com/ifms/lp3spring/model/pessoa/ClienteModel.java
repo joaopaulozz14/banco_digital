@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.ifms.lp3spring.model.conta.ContaModel;
+import com.ifms.lp3spring.model.conta.CorrenteModel;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 
@@ -16,20 +18,19 @@ public class ClienteModel extends PessoaModel {
     @Column(name = "rendaCliente")
     private double renda;
     
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ContaModel> contas = new ArrayList<>();
 
-    protected ClienteModel() {}
+    public ClienteModel() {}
 
     public ClienteModel(String nome, String cpf, String telefone, Date dataNascimento, double renda) {
         super(nome, cpf, telefone, dataNascimento);
         this.renda = renda;
     }
-
-    // Método utilitário essencial para o Cascade funcionar perfeitamente
+    
     public void adicionarConta(ContaModel conta) {
-        this.contas.add(conta);
-        conta.setCliente(this); 
+    	 this.contas.add(conta);
+    	 conta.setCliente(this);
     }
 
     public void removerConta(ContaModel conta) {

@@ -14,9 +14,9 @@ public class GerenteModel extends PessoaModel {
 
     @Positive(message = "O salário deve ser maior que zero") // Melhor que @NotNull para valores numéricos
     @Column(name = "salarioGerente")
-    private int salario;
+    private double salario;
 
-    protected GerenteModel() {
+    public GerenteModel() {
     }
 
     public GerenteModel(String nome, String cpf, String telefone, Date dataNascimento, int salario) {
@@ -24,6 +24,6 @@ public class GerenteModel extends PessoaModel {
         this.salario = salario;
     }
 
-    public int getSalario() { return salario; }
-    public void setSalario(int salario) { this.salario = salario; }
+    public double getSalario() { return salario; }
+    public void setSalario(double salario) { this.salario = salario; }
 }

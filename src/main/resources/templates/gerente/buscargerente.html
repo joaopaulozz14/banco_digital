@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layoutprincipal :: estrutura(~{:: #conteudoLista})}">
+
+<body>
+
+<div id="conteudoLista">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>Gerentes Cadastrados</h2>
+
+        <a th:href="@{/salvargerente}"
+           class="btn btn-primary">
+            Novo Gerente
+        </a>
+    </div>
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Salario</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="g : ${gerentes}">
+
+            <td th:text="${g.idPessoa}"></td>
+
+            <td th:text="${g.nome}"></td>
+
+            <td th:text="${g.cpf}"></td>
+
+            <td th:text="${g.telefone}"></td>
+
+            <td th:text="'R$ ' + ${g.salario}"></td>
+
+            <td>
+
+                <a th:href="@{/editargerente/{id}(id=${g.idPessoa})}"
+                   class="btn btn-warning"
+                   style="padding:6px 10px; font-size:0.85em;">
+                    Editar
+                </a>
+
+				<a th:href="@{/removergerente/{id}(id=${g.idPessoa})}"
+				   onclick="return confirm('Deseja realmente remover este cliente?')"
+				   class="btn btn-danger"
+				   style="padding:6px 10px; font-size:0.85em;">
+				    Remover
+				</a>
+
+            </td>
+
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(gerentes)}">
+            <td colspan="6"
+                style="text-align:center; color:#777;">
+                Nenhum cliente cadastrado.
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
+```

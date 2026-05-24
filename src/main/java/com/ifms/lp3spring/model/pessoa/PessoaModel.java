@@ -35,7 +35,6 @@ public abstract class PessoaModel {
 
     @Past(message = "A data de nascimento deve ser uma data passada")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE) // Garante que apenas a data (sem hora) seja salva no banco
     private Date dataNascimento;
 
     // Construtor padrão protegido (boa prática JPA)

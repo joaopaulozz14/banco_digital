@@ -8,7 +8,7 @@ public class PrincipalController {
     
     @GetMapping({"home","/"})
     public String getMethodName() {
-        return "principal";
+        return "homepage";
     }
     
 }

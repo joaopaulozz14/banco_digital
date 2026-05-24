@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layoutprincipal :: estrutura(~{:: #conteudoLista})}">
+
+<body>
+
+<div id="conteudoLista">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>Clientes Cadastrados</h2>
+
+        <a th:href="@{/salvarcliente}"
+           class="btn btn-primary">
+            Novo Cliente
+        </a>
+    </div>
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Renda</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="c : ${clientes}">
+
+            <td th:text="${c.idPessoa}"></td>
+
+            <td th:text="${c.nome}"></td>
+
+            <td th:text="${c.cpf}"></td>
+
+            <td th:text="${c.telefone}"></td>
+
+            <td th:text="'R$ ' + ${c.renda}"></td>
+
+            <td>
+
+                <a th:href="@{/editarcliente/{id}(id=${c.idPessoa})}"
+                   class="btn btn-warning"
+                   style="padding:6px 10px; font-size:0.85em;">
+                    Editar
+                </a>
+
+				<a th:href="@{/removercliente/{id}(id=${c.idPessoa})}"
+				   onclick="return confirm('Deseja realmente remover este cliente?')"
+				   class="btn btn-danger"
+				   style="padding:6px 10px; font-size:0.85em;">
+				    Remover
+				</a>
+				
+				<a th:href="@{/detalhescliente/{id}(id=${c.idPessoa})}"
+				   class="btn btn-success"
+				   style="padding:6px 10px; font-size:0.85em;">
+				    Detalhes
+				</a>
+
+            </td>
+
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(clientes)}">
+            <td colspan="6"
+                style="text-align:center; color:#777;">
+                Nenhum cliente cadastrado.
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
+```

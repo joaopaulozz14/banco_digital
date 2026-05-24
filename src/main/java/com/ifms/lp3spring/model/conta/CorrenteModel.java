@@ -13,14 +13,19 @@ public class CorrenteModel extends ContaModel {
     
     @PositiveOrZero(message = "O cheque especial deve ser maior ou igual a zero")
     @Column(name = "chequeEspecial")
-    private double chequeEspecial; // Alterado de String para double para fazer sentido financeiro
+    private double chequeEspecial;
 
     protected CorrenteModel() {}
 
-    // Construtor corrigido sem o parâmetro idConta
     public CorrenteModel(double saldoAtual, double fatura, double chequeEspecial) {
         super(saldoAtual, fatura);
         this.chequeEspecial = chequeEspecial;
+    }
+    
+    // Polimorfismo para armazenar limite na conta
+    @Override
+    public double getLimite() {
+        return chequeEspecial;
     }
 
     public double getChequeEspecial() { return chequeEspecial; }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- Conecta a página ao layout compartilhado passando o bloco #conteudoHome -->
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout/layoutprincipal :: estrutura(~{:: #conteudoHome})}">
+<body>
+
+    <!-- Todo o código abaixo será injetado dentro da tag .container do seu layout -->
+    <div id="conteudoHome">
+        
+        <div style="margin-bottom: 30px;">
+            <h1 style="color: #343a40; margin-bottom: 5px;">Painel Administrativo</h1>
+            <p style="color: #6c757d; margin-top: 0;">Bem-vindo ao Sistema de Banco Digital — LP3 Spring</p>
+        </div>
+
+        <!-- Cards informativos para facilitar o acesso rápido -->
+        <div style="display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
+            
+            <!-- Card de Clientes -->
+            <div style="flex: 1; min-width: 250px; background: #fff; border: 1px solid #e3e6f0; border-left: 5px solid #20c997; border-radius: 4px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <h3 style="color: #20c997; margin-top: 0; margin-bottom: 10px;">Clientes</h3>
+                <p style="font-size: 0.95em; color: #5a5c69; min-height: 40px;">Gerencie cadastros, atualize dados pessoais e aplique regras de cálculo automático de limite via <strong>Strategy</strong>.</p>
+                <a th:href="@{/buscarcliente}" class="btn btn-success" style="font-size: 0.9em; padding: 6px 12px;">Acessar Módulo</a>
+            </div>
+
+            <!-- Card de Gerentes -->
+            <div style="flex: 1; min-width: 250px; background: #fff; border: 1px solid #e3e6f0; border-left: 5px solid #007bff; border-radius: 4px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <h3 style="color: #007bff; margin-top: 0; margin-bottom: 10px;">Gerentes</h3>
+                <p style="font-size: 0.95em; color: #5a5c69; min-height: 40px;">Controle a equipe de gerentes das agências, atribua permissões e faça a manutenção dos registros.</p>
+                <a th:href="@{/buscargerente}" class="btn btn-primary" style="font-size: 0.9em; padding: 6px 12px;">Acessar Módulo</a>
+            </div>
+
+        </div>
+
+        <!-- Seção de Contexto Acadêmico / Documentação do Projeto -->
+        <div style="background-color: #f8f9fa; border: 1px solid #e3e6f0; border-radius: 6px; padding: 20px;">
+            <h4 style="margin-top: 0; color: #4e73df;">Informações do Projeto</h4>
+            <p style="font-size: 0.9em; line-height: 1.5; color: #6e707e;">
+                Esta aplicação foi desenvolvida utilizando o framework <strong>Spring Boot</strong> integrado ao motor de templates <strong>Thymeleaf</strong> e persistência de dados via <strong>Spring Data JPA</strong>. 
+            </p>
+            <ul style="font-size: 0.9em; color: #6e707e; padding-left: 20px; line-height: 1.6;">
+                <li><strong>Arquitetura:</strong> Camadas bem definidas divididas em Model, Repository, Service e Controller.</li>
+                <li><strong>Design Pattern:</strong> Implementação do padrão comportamental <em>Strategy</em> com uma estrutura de <em>Factory</em> para computar tetos de crédito proporcionais à renda informada.</li>
+                <li><strong>Interface Reutilizável:</strong> Componentização de fragmentos HTML promovendo reuso visual completo.</li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

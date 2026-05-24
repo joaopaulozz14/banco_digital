@@ -18,9 +18,8 @@ public class CreditoModel extends CartaoModel {
     protected CreditoModel() {
     }
 
-    // Construtor corrigido sem o parâmetro idCartao
-    public CreditoModel(LocalDate validade, String cvv, ContaModel conta, double limite) {
-        super(validade, cvv, conta);
+    public CreditoModel(LocalDate validade, String cvv, String numero, ContaModel conta, double limite) {
+        super(validade, cvv, numero, conta);
         this.limite = limite;
     }
 

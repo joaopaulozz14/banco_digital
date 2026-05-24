@@ -1,98 +1,191 @@
+```html
+<!-- ========================= -->
+<!-- layout/layoutprincipal.html -->
+<!-- ========================= -->
+
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="estrutura(conteudoTela)">
 
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='css/bootstrap.min.css'>
-    <script src='js/bootstrap.bundle.min.js'></script>
+    <meta charset="UTF-8">
+    <title>Banco Digital - IFMS</title>
+
+    <style>
+
+        *{
+            box-sizing: border-box;
+        }
+
+        body{
+            margin:0;
+            padding:0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color:#f4f6f9;
+            color:#343a40;
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+            background-color:#343a40;
+            padding:15px 30px;
+            display:flex;
+            gap:15px;
+            align-items:center;
+            box-shadow:0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .navbar a{
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+            padding:10px 14px;
+            border-radius:4px;
+            transition:0.3s;
+        }
+
+        .navbar a:hover{
+            background-color:#495057;
+        }
+
+        /* CONTAINER */
+
+        .container{
+            background-color:white;
+            margin:25px auto;
+            width:90%;
+            max-width:1200px;
+            min-height:75vh;
+            padding:30px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* FOOTER */
+
+        footer{
+            text-align:center;
+            padding:20px;
+            color:#777;
+            font-size:0.9em;
+            border-top:1px solid #ddd;
+            margin-top:30px;
+        }
+
+        /* FORMULÁRIOS */
+
+        .form-group{
+            margin-bottom:18px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:6px;
+            font-weight:bold;
+        }
+
+        input{
+            width:100%;
+            max-width:400px;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:4px;
+        }
+
+        .error{
+            display:block;
+            margin-top:5px;
+            color:red;
+            font-size:0.9em;
+        }
+
+        /* BOTÕES */
+
+        .btn{
+            border:none;
+            padding:10px 15px;
+            border-radius:4px;
+            cursor:pointer;
+            font-weight:bold;
+            text-decoration:none;
+            display:inline-block;
+            transition:0.3s;
+        }
+
+        .btn-success{
+            background-color:#28a745;
+            color:white;
+        }
+
+        .btn-primary{
+            background-color:#007bff;
+            color:white;
+        }
+
+        .btn-warning{
+            background-color:#ffc107;
+            color:black;
+        }
+
+        .btn-danger{
+            background-color:#dc3545;
+            color:white;
+        }
+
+        .btn:hover{
+            opacity:0.9;
+        }
+
+        /* TABELAS */
+
+        table{
+            width:100%;
+            margin-top:20px;
+            border-collapse:collapse;
+        }
+
+        th, td{
+            border:1px solid #ddd;
+            padding:12px;
+            text-align:left;
+        }
+
+        th{
+            background-color:#f2f2f2;
+        }
+
+        tr:hover{
+            background-color:#f9f9f9;
+        }
+
+    </style>
+
 </head>
 
 <body>
-    <!-----------------Menu da aplicação------------------------------------------------------------------------------>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" target="_blank" href="https://www.ifms.edu.br/">
-                <img src="imagens/ifms.png" height="40%" width="55%" alt="Logo da instituição do IFMS"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/home">Principal</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Professor
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/salvarprofessor">Salvar</a></li>
-                            <li><a class="dropdown-item" href="/manterprofessor">Buscar / Remover / Alterar</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Configurações</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Aluno
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/salvaraluno">Salvar</a></li>
-                            <li><a class="dropdown-item" href="/manteraluno">Buscar / Remover / Alterar</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Configurações</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Disciplina
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/salvardisciplina">Salvar</a></li>
-                            <li><a class="dropdown-item" href="#">Buscar / Remover / Alterar</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Configurações</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-    <!------------------------------------------------------------------------------------------------------------------>
-    <!-----------------Parte principal da aplicação------------------------------------------------------------------------------>
-    <div class="container" layout:fragment="conteudoprincipal">
 
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+        <a th:href="@{/}">Início</a>
+        <a th:href="@{/buscarcliente}">Clientes</a>
+        <a th:href="@{/buscargerente}">Gerentes</a>
     </div>
-    <!------------------------------------------------------------------------------------------------------------------>
-    <footer class="bg-body-tertiary py-3 mt-5 border-top">
-        <div class="container">
-            <p>© 2017–2026 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-        </div>
+
+    <!-- CONTEÚDO DINÂMICO -->
+
+    <div class="container">
+        <div th:replace="${conteudoTela}"></div>
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <p>&copy; 2026 - Sistema Banco Digital IFMS</p>
     </footer>
+
 </body>
 
 </html>
+```
