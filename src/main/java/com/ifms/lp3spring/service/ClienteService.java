@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ClienteService {
@@ -32,6 +33,19 @@ public class ClienteService {
             CorrenteModel conta = new CorrenteModel(0.0, 0.0, limiteCalculado);
             cliente.adicionarConta(conta);
             
+            // Criar cartaoCredito padrão associada a conta;
+      		String numero = "4000" + (1000 + new Random().nextInt(9000));
+            String cvv = String.valueOf(100 + new Random().nextInt(900));
+      		
+            CreditoModel cartao = new CreditoModel(
+                    LocalDate.now().plusYears(5),
+                    cvv,
+                    numero,
+                    conta,
+                    limiteCalculado
+            		);
+    		conta.adicionarCartao(cartao);
+
             return clienteRepository.save(cliente);
         } catch (Exception e) {
             throw new Exception(e.getMessage());

@@ -67,6 +67,37 @@
 
     </div>
 	
+	<!-- Cartoes associados a conta-->
+	<div class="area-tabela">
+
+	    <h2>Cartões Associados</h2>
+
+	    <table>
+
+	        <thead>
+	            <tr>
+	                <th>Numero</th>
+	                <th>Validade</th>
+	                <th>Limite</th>
+	            </tr>
+	        </thead>
+
+	        <tbody th:each="conta : ${cliente.contas}">
+	            <tr th:each="cartao : ${conta.cartoes}">
+
+	                <td th:text="${cartao.numero}"></td>
+					<td th:text="${cartao.validade}"></td>
+					<td th:text="${cartao.limite}"></td>
+
+	            </tr>
+
+	        </tbody>
+
+	    </table>
+
+	</div>
+	
+		
 	<!-- SAQUE E DEPOSITO -->
 	<div>
 

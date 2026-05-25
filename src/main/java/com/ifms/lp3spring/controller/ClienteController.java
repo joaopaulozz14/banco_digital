@@ -128,7 +128,7 @@ public class ClienteController {
         return mv;
         
         // Fluxo: mapeamento em detalhescliente/id -> ModelAndView (Recebe parametros: 
-        // 'arquivo html', 'dados enviados') -> Usa mv.addObject para chamar services
+        // 'arquivo html', 'dados enviados') -> Usa mv.addObject para chamar services especificas
     }
 
 
