@@ -1,143 +1,198 @@
-<html>
-	<head>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	</head>
-	<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons para o ícone do cartão -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* Paleta de Cores Identidade IFMS */
+        :root {
+            --ifms-verde: #329632;
+            --ifms-verde-dark: #246e24;
+            --ifms-vermelho: #e61919;
+            --ifms-vermelho-dark: #b31010;
+            --ifms-cinza-escuro: #2f3e46;
+        }
 
-		<div id="conteudoDetalhes" class="container py-4">
+        /* Customizações de botões e badges para a identidade */
+        .bg-ifms-verde { background-color: var(--ifms-verde) !important; color: white; }
+        .text-ifms-verde { color: var(--ifms-verde) !important; }
+        .border-ifms-verde { border-color: var(--ifms-verde) !important; }
+        
+        .bg-ifms-vermelho { background-color: var(--ifms-vermelho) !important; color: white; }
+        .text-ifms-vermelho { color: var(--ifms-vermelho) !important; }
+        .border-ifms-vermelho { border-color: var(--ifms-vermelho) !important; }
 
-			<!-- Cabeçalho -->
-			<div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-				<div>
-					<h1 class="h2 fw-bold text-dark mb-1" th:text="|Olá, ${cliente.nome}|">Olá, Cliente</h1>
-					<p class="text-muted mb-0">Bem-vindo ao seu painel bancário corporativo</p>
-				</div>
-				<span class="badge bg-primary px-3 py-2 fs-6">Painel Ativo</span>
-			</div>
-		
-			<!-- Cards de Resumo Financeiro -->
-			<div class="row g-3 mb-4">
-				<div class="col-12 col-md-6">
-					<div class="card shadow-sm border-start border-success border-4 h-100">
-						<div class="card-body">
-							<h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Saldo Total</h6>
-							<p class="card-text h3 text-success fw-bold mb-0" th:text="|R$ ${saldoTotal}|">R$ 0,00</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-6">
-					<div class="card shadow-sm border-start border-primary border-4 h-100">
-						<div class="card-body">
-							<h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Limite Disponível</h6>
-							<p class="card-text h3 text-primary fw-bold mb-0" th:text="|R$ ${limiteTotal}|">R$ 0,00</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<!-- Tabela de Contas -->
-			<div class="card shadow-sm mb-4">
-				<div class="card-header bg-white py-3">
-					<h5 class="card-title fw-bold text-dark mb-0">Contas Associadas</h5>
-				</div>
-				<div class="table-responsive">
-					<table class="table table-hover align-middle mb-0">
-						<thead class="table-light">
-							<tr>
-								<th class="ps-4">Tipo de Conta</th>
-								<th>Saldo Atual</th>
-								<th class="pe-4">Limite de Crédito</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="conta : ${cliente.contas}">
-								<td class="ps-4 fw-medium text-dark" th:text="${conta.tipoConta}">Corrente</td>
-								<td class="text-success fw-bold" th:text="|R$ ${conta.saldoAtual}|">R$ 0,00</td>
-								<td class="text-primary fw-semibold" th:text="|R$ ${conta.limite}|">R$ 0,00</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		
-			<!-- Seção de Cartões -->
-			<div class="mb-4">
-				<h5 class="fw-bold text-dark mb-3">Cartões Associados</h5>
-				<div class="row g-3">
-					<!-- Grid responsiva para os cartões -->
-					<div class="col-12 col-md-6 col-lg-4" th:each="conta : ${cliente.contas}">
-						<div class="card bg-dark text-white shadow" th:each="cartao : ${conta.cartoes}" style="border-radius: 15px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
-							<div class="card-body p-4 d-flex flex-column justify-content-between" style="min-height: 200px;">
-								<!-- Topo do Cartão -->
-								<div class="d-flex justify-content-between align-items-center">
-									<span class="fw-bold tracking-wide fs-5 text-info">IFMS Bank</span>
-									<i class="bi bi-credit-card-2-front fs-3 text-secondary"></i>
-								</div>
-								<!-- Número do Cartão -->
-								<div class="my-4">
-									<p class="h4 fs-5 font-monospace text-center mb-0" style="letter-spacing: 2px;" th:text="${cartao.numero}">
-										**** **** **** 1234
-									</p>
-								</div>
-								<!-- Rodapé do Cartão -->
-								<div class="d-flex justify-content-between align-items-end">
-									<div>
-										<small class="text-uppercase text-secondary d-block" style="font-size: 0.65rem;">Validade</small>
-										<span class="fw-semibold small" th:text="${cartao.validade}">2030-05-01</span>
-									</div>
-									<div class="text-end" th:if="${cartao.limite != null}">
-										<small class="text-uppercase text-secondary d-block" style="font-size: 0.65rem;">Limite</small>
-										<span class="fw-bold text-info small" th:text="|R$ ${cartao.limite}|">R$ 1500</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<!-- Operações Bancárias -->
-			<div class="mb-4">
-				<h5 class="fw-bold text-dark mb-3">Operações Bancárias</h5>
-				<div class="row g-3">
-					<div class="col-12 col-md-6" th:each="conta : ${cliente.contas}">
-						<div class="card h-100 shadow-sm">
-							<div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-								<h6 class="fw-bold text-primary mb-0" th:text="${conta.tipoConta}">Conta Corrente</h6>
-								<span class="badge bg-light text-dark border fw-medium" th:text="|Saldo: R$ ${conta.saldoAtual}|">Saldo: R$ 0,00</span>
-							</div>
-							<div class="card-body d-flex flex-column gap-3">
-								
-								<!-- Form de Depósito -->
-								<form th:action="@{/depositar}" method="POST">
-									<input type="hidden" name="idConta" th:value="${conta.idConta}" />
-									<input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
-									<div class="input-group">
-										<span class="input-group-text bg-light text-muted">R$</span>
-										<input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do depósito" required />
-										<button type="submit" class="btn btn-success px-4 fw-medium">Depositar</button>
-									</div>
-								</form>
-		
-								<!-- Form de Saque -->
-								<form th:action="@{/sacar}" method="POST">
-									<input type="hidden" name="idConta" th:value="${conta.idConta}" />
-									<input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
-									<div class="input-group">
-										<span class="input-group-text bg-light text-muted">R$</span>
-										<input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do saque" required />
-										<button type="submit" class="btn btn-danger px-4 fw-medium">Sacar</button>
-									</div>
-								</form>
-		
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-		</div>
-		
+        .btn-ifms-success {
+            background-color: var(--ifms-verde);
+            border-color: var(--ifms-verde);
+            color: white;
+        }
+        .btn-ifms-success:hover {
+            background-color: var(--ifms-verde-dark);
+            border-color: var(--ifms-verde-dark);
+            color: white;
+        }
 
+        .btn-ifms-danger {
+            background-color: var(--ifms-vermelho);
+            border-color: var(--ifms-vermelho);
+            color: white;
+        }
+        .btn-ifms-danger:hover {
+            background-color: var(--ifms-vermelho-dark);
+            border-color: var(--ifms-vermelho-dark);
+            color: white;
+        }
+
+        /* Estilização Premium do Cartão IFMS */
+        .cartao-ifms {
+            border-radius: 15px;
+            background: linear-gradient(135deg, #1b4d22 0%, #2f3e46 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div id="conteudoDetalhes" class="container py-4">
+
+        <!-- Cabeçalho -->
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+                <h1 class="h2 fw-bold text-dark mb-1" th:text="|Olá, ${cliente.nome}|">Olá, Cliente</h1>
+                <p class="text-muted mb-0">Bem-vindo ao seu painel bancário corporativo</p>
+            </div>
+            <span class="badge bg-ifms-verde px-3 py-2 fs-6">Painel Ativo</span>
+        </div>
+    
+        <!-- Cards de Resumo Financeiro -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm border-start border-ifms-verde border-4 h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Saldo Total</h6>
+                        <p class="card-text h3 text-ifms-verde fw-bold mb-0" th:text="|R$ ${saldoTotal}|">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm border-start border-ifms-vermelho border-4 h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Limite Disponível</h6>
+                        <p class="card-text h3 text-ifms-vermelho fw-bold mb-0" th:text="|R$ ${limiteTotal}|">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Tabela de Contas -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title fw-bold text-dark mb-0">Contas Associadas</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Tipo de Conta</th>
+                            <th>Saldo Atual</th>
+                            <th class="pe-4">Limite de Crédito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="conta : ${cliente.contas}">
+                            <td class="ps-4 fw-medium text-dark" th:text="${conta.tipoConta}">Corrente</td>
+                            <td class="text-ifms-verde fw-bold" th:text="|R$ ${conta.saldoAtual}|">R$ 0,00</td>
+                            <td class="text-ifms-vermelho fw-semibold" th:text="|R$ ${conta.limite}|">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Seção de Cartões -->
+        <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3">Cartões Associados</h5>
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4" th:each="conta : ${cliente.contas}">
+                    <div class="card text-white shadow cartao-ifms" th:each="cartao : ${conta.cartoes}">
+                        <div class="card-body p-4 d-flex flex-column justify-content-between" style="min-height: 200px;">
+                            <!-- Topo do Cartão -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold tracking-wide fs-5 text-white">IFMS <span class="text-ifms-vermelho">Bank</span></span>
+                                <i class="bi bi-credit-card-2-front fs-3 text-light-50"></i>
+                            </div>
+                            <!-- Número do Cartão -->
+                            <div class="my-4">
+                                <p class="h4 fs-5 font-monospace text-center mb-0" style="letter-spacing: 2px;" th:text="${cartao.numero}">
+                                    **** **** **** 1234
+                                </p>
+                            </div>
+                            <!-- Rodapé do Cartão -->
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <small class="text-uppercase text-white-50 d-block" style="font-size: 0.65rem;">Validade</small>
+                                    <span class="fw-semibold small" th:text="${cartao.validade}">2030-05-01</span>
+                                </div>
+                                <div class="text-end" th:if="${cartao.limite != null}">
+                                    <small class="text-uppercase text-white-50 d-block" style="font-size: 0.65rem;">Limite</small>
+                                    <span class="fw-bold text-white small" th:text="|R$ ${cartao.limite}|">R$ 1500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Operações Bancárias -->
+        <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3">Operações Bancárias</h5>
+            <div class="row g-3">
+                <div class="col-12 col-md-6" th:each="conta : ${cliente.contas}">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                            <h6 class="fw-bold text-dark mb-0" th:text="${conta.tipoConta}">Conta Corrente</h6>
+                            <span class="badge bg-light text-dark border fw-medium" th:text="|Saldo: R$ ${conta.saldoAtual}|">Saldo: R$ 0,00</span>
+                        </div>
+                        <div class="card-body d-flex flex-column gap-3">
+                            
+                            <!-- Form de Depósito -->
+                            <form th:action="@{/depositar}" method="POST">
+                                <input type="hidden" name="idConta" th:value="${conta.idConta}" />
+                                <input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted">R$</span>
+                                    <input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do depósito" required />
+                                    <button type="submit" class="btn btn-ifms-success px-4 fw-medium">Depositar</button>
+                                </div>
+                            </form>
+    
+                            <!-- Form de Saque -->
+                            <form th:action="@{/sacar}" method="POST">
+                                <input type="hidden" name="idConta" th:value="${conta.idConta}" />
+                                <input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted">R$</span>
+                                    <input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do saque" required />
+                                    <button type="submit" class="btn btn-ifms-danger px-4 fw-medium">Sacar</button>
+                                </div>
+                            </form>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- Bootstrap Bundle JS (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

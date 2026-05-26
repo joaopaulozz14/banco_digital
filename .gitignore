@@ -34,8 +34,5 @@ build/
 .vscode/
 
 # Ignora arquivos de banco de dados locais
-*.db
-*.mv.db
-*.h2.db
-*.sqlite
+src/main/resources/application.properties
 
