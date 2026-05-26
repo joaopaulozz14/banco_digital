@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.ifms.lp3spring.model.conta.ContaModel;
-import com.ifms.lp3spring.model.conta.CorrenteModel;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;

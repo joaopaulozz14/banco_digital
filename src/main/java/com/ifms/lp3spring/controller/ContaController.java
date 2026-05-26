@@ -2,7 +2,6 @@ package com.ifms.lp3spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,7 +15,7 @@ public class ContaController {
     
     @PostMapping("/depositar")
     public String depositar(
-    		  @RequestParam Long idConta,
+    		    @RequestParam Long idConta,
     	        @RequestParam double valor,
     	        @RequestParam Long idCliente) {
 

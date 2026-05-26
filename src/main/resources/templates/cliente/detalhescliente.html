@@ -1,300 +1,143 @@
-<div id="conteudoDetalhes">
+<html>
+	<head>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	</head>
+	<body>
 
-    <!-- Cabeçalho -->
-    <div class="topo-dashboard">
+		<div id="conteudoDetalhes" class="container py-4">
 
-        <div>
-            <h1 th:text="|Olá, ${cliente.nome}|"></h1>
-
-            <p class="subtitulo">
-                Bem-vindo ao painel bancário
-            </p>
-        </div>
-
-    </div>
-
-    <!-- Cards -->
-    <div class="cards-financeiros">
-
-        <div class="card-financeiro">
-            <h3>Saldo Total</h3>
-
-            <p class="valor positivo"
-               th:text="|R$ ${saldoTotal}|">
-            </p>
-        </div>
-
-        <div class="card-financeiro">
-            <h3>Limite Disponível</h3>
-
-            <p class="valor azul"
-               th:text="|R$ ${limiteTotal}|">
-            </p>
-        </div>
-
-    </div>
-
-    <!-- Tabela -->
-    <div class="area-tabela">
-
-        <h2>Contas Associadas</h2>
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Saldo</th>
-                    <th>Limite</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr th:each="conta : ${cliente.contas}">
-
-                    <td th:text="${conta.tipoConta}"></td>
-
-                    <td th:text="|R$ ${conta.saldoAtual}|"></td>
-
-                    <td th:text="|R$ ${conta.limite}|"></td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-	
-	<!-- Cartoes associados a conta-->
-	<div class="area-tabela">
-
-	    <h2>Cartões Associados</h2>
-
-	    <table>
-
-	        <thead>
-	            <tr>
-	                <th>Numero</th>
-	                <th>Validade</th>
-	                <th>Limite</th>
-	            </tr>
-	        </thead>
-
-	        <tbody th:each="conta : ${cliente.contas}">
-	            <tr th:each="cartao : ${conta.cartoes}">
-
-	                <td th:text="${cartao.numero}"></td>
-					<td th:text="${cartao.validade}"></td>
-					<td th:text="${cartao.limite}"></td>
-
-	            </tr>
-
-	        </tbody>
-
-	    </table>
-
-	</div>
-	
+			<!-- Cabeçalho -->
+			<div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+				<div>
+					<h1 class="h2 fw-bold text-dark mb-1" th:text="|Olá, ${cliente.nome}|">Olá, Cliente</h1>
+					<p class="text-muted mb-0">Bem-vindo ao seu painel bancário corporativo</p>
+				</div>
+				<span class="badge bg-primary px-3 py-2 fs-6">Painel Ativo</span>
+			</div>
 		
-	<!-- SAQUE E DEPOSITO -->
-	<div>
-
-		</tr>
+			<!-- Cards de Resumo Financeiro -->
+			<div class="row g-3 mb-4">
+				<div class="col-12 col-md-6">
+					<div class="card shadow-sm border-start border-success border-4 h-100">
+						<div class="card-body">
+							<h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Saldo Total</h6>
+							<p class="card-text h3 text-success fw-bold mb-0" th:text="|R$ ${saldoTotal}|">R$ 0,00</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="card shadow-sm border-start border-primary border-4 h-100">
+						<div class="card-body">
+							<h6 class="card-subtitle text-muted text-uppercase fw-semibold mb-2 fs-7">Limite Disponível</h6>
+							<p class="card-text h3 text-primary fw-bold mb-0" th:text="|R$ ${limiteTotal}|">R$ 0,00</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		
-		<tr th:each="conta : ${cliente.contas}">
-
-		    <td>
-
-		        <!-- DEPÓSITO -->
-
-		        <form th:action="@{/depositar}"
-		              method="POST">
-
-		            <input type="hidden"
-		                   name="idConta"
-		                   th:value="${conta.idConta}" />
-
-		            <input type="hidden"
-		                   name="idCliente"
-		                   th:value="${cliente.idPessoa}" />
-
-		            <input type="number"
-		                   step="0.01"
-		                   name="valor"
-		                   placeholder="Depósito" />
-
-		            <button type="submit"
-		                    class="btn btn-success">
-
-		                Depositar
-		            </button>
-
-		        </form>
-
-		        <br>
-
-		        <!-- SAQUE -->
-
-		        <form th:action="@{/sacar}"
-		              method="POST">
-
-		            <input type="hidden"
-		                   name="idConta"
-		                   th:value="${conta.idConta}" />
-
-		            <input type="hidden"
-		                   name="idCliente"
-		                   th:value="${cliente.idPessoa}" />
-
-		            <input type="number"
-		                   step="0.01"
-		                   name="valor"
-		                   placeholder="Saque" />
-
-		            <button type="submit"
-		                    class="btn btn-danger">
-
-		                Sacar
-		            </button>
-
-		        </form>
-
-		    </td>
-
-		</tr>
-	</div>
-
-</div>
-
-<style>
-	/* DASHBOARD */
-
-	.topo-dashboard {
-	    display: flex;
-	    justify-content: space-between;
-	    align-items: center;
-
-	    margin-bottom: 30px;
-	}
-
-	.subtitulo {
-	    color: #777;
-	    margin-top: -10px;
-	}
-
-	/* CARDS */
-
-	.cards-financeiros {
-
-	    display: flex;
-	    gap: 20px;
-
-	    flex-wrap: wrap;
-
-	    margin-bottom: 40px;
-	}
-
-	.card-financeiro {
-
-	    flex: 1;
-	    min-width: 250px;
-
-	    background: linear-gradient(135deg, #ffffff, #f8f9fa);
-
-	    border-radius: 12px;
-
-	    padding: 25px;
-
-	    box-shadow:
-	        0 4px 10px rgba(0,0,0,0.08);
-
-	    transition: 0.3s;
-	}
-
-	.card-financeiro:hover {
-
-	    transform: translateY(-3px);
-
-	    box-shadow:
-	        0 8px 20px rgba(0,0,0,0.12);
-	}
-
-	.card-financeiro h3 {
-
-	    margin-top: 0;
-
-	    color: #555;
-
-	    font-size: 1rem;
-	}
-
-	.valor {
-
-	    font-size: 2rem;
-
-	    font-weight: bold;
-
-	    margin-top: 15px;
-	}
-
-	.positivo {
-	    color: #28a745;
-	}
-
-	.azul {
-	    color: #007bff;
-	}
-
-	/* TABELA */
-
-	.area-tabela {
-
-	    background-color: white;
-
-	    padding: 25px;
-
-	    border-radius: 12px;
-
-	    box-shadow:
-	        0 2px 8px rgba(0,0,0,0.05);
-	}
-
-	.area-tabela h2 {
-
-	    margin-top: 0;
-
-	    margin-bottom: 20px;
-	}
-
-	table {
-
-	    width: 100%;
-
-	    border-collapse: collapse;
-	}
-
-	th {
-
-	    background-color: #343a40;
-
-	    color: white;
-
-	    padding: 14px;
-
-	    text-align: left;
-	}
-
-	td {
-
-	    padding: 14px;
-
-	    border-bottom: 1px solid #eee;
-	}
-
-	tr:hover {
-
-	    background-color: #f8f9fa;
-	}
-</style>
+			<!-- Tabela de Contas -->
+			<div class="card shadow-sm mb-4">
+				<div class="card-header bg-white py-3">
+					<h5 class="card-title fw-bold text-dark mb-0">Contas Associadas</h5>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-hover align-middle mb-0">
+						<thead class="table-light">
+							<tr>
+								<th class="ps-4">Tipo de Conta</th>
+								<th>Saldo Atual</th>
+								<th class="pe-4">Limite de Crédito</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="conta : ${cliente.contas}">
+								<td class="ps-4 fw-medium text-dark" th:text="${conta.tipoConta}">Corrente</td>
+								<td class="text-success fw-bold" th:text="|R$ ${conta.saldoAtual}|">R$ 0,00</td>
+								<td class="text-primary fw-semibold" th:text="|R$ ${conta.limite}|">R$ 0,00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+			<!-- Seção de Cartões -->
+			<div class="mb-4">
+				<h5 class="fw-bold text-dark mb-3">Cartões Associados</h5>
+				<div class="row g-3">
+					<!-- Grid responsiva para os cartões -->
+					<div class="col-12 col-md-6 col-lg-4" th:each="conta : ${cliente.contas}">
+						<div class="card bg-dark text-white shadow" th:each="cartao : ${conta.cartoes}" style="border-radius: 15px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+							<div class="card-body p-4 d-flex flex-column justify-content-between" style="min-height: 200px;">
+								<!-- Topo do Cartão -->
+								<div class="d-flex justify-content-between align-items-center">
+									<span class="fw-bold tracking-wide fs-5 text-info">IFMS Bank</span>
+									<i class="bi bi-credit-card-2-front fs-3 text-secondary"></i>
+								</div>
+								<!-- Número do Cartão -->
+								<div class="my-4">
+									<p class="h4 fs-5 font-monospace text-center mb-0" style="letter-spacing: 2px;" th:text="${cartao.numero}">
+										**** **** **** 1234
+									</p>
+								</div>
+								<!-- Rodapé do Cartão -->
+								<div class="d-flex justify-content-between align-items-end">
+									<div>
+										<small class="text-uppercase text-secondary d-block" style="font-size: 0.65rem;">Validade</small>
+										<span class="fw-semibold small" th:text="${cartao.validade}">2030-05-01</span>
+									</div>
+									<div class="text-end" th:if="${cartao.limite != null}">
+										<small class="text-uppercase text-secondary d-block" style="font-size: 0.65rem;">Limite</small>
+										<span class="fw-bold text-info small" th:text="|R$ ${cartao.limite}|">R$ 1500</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<!-- Operações Bancárias -->
+			<div class="mb-4">
+				<h5 class="fw-bold text-dark mb-3">Operações Bancárias</h5>
+				<div class="row g-3">
+					<div class="col-12 col-md-6" th:each="conta : ${cliente.contas}">
+						<div class="card h-100 shadow-sm">
+							<div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+								<h6 class="fw-bold text-primary mb-0" th:text="${conta.tipoConta}">Conta Corrente</h6>
+								<span class="badge bg-light text-dark border fw-medium" th:text="|Saldo: R$ ${conta.saldoAtual}|">Saldo: R$ 0,00</span>
+							</div>
+							<div class="card-body d-flex flex-column gap-3">
+								
+								<!-- Form de Depósito -->
+								<form th:action="@{/depositar}" method="POST">
+									<input type="hidden" name="idConta" th:value="${conta.idConta}" />
+									<input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
+									<div class="input-group">
+										<span class="input-group-text bg-light text-muted">R$</span>
+										<input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do depósito" required />
+										<button type="submit" class="btn btn-success px-4 fw-medium">Depositar</button>
+									</div>
+								</form>
+		
+								<!-- Form de Saque -->
+								<form th:action="@{/sacar}" method="POST">
+									<input type="hidden" name="idConta" th:value="${conta.idConta}" />
+									<input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
+									<div class="input-group">
+										<span class="input-group-text bg-light text-muted">R$</span>
+										<input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor do saque" required />
+										<button type="submit" class="btn btn-danger px-4 fw-medium">Sacar</button>
+									</div>
+								</form>
+		
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+
+</body>
+</html>
