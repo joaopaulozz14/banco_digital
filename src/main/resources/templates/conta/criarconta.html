@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+
+    <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutprincipal
+      :: estrutura(~{:: #conteudoConta})}">
+
+    <body>
+
+        <!DOCTYPE html>
+
+        <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutprincipal
+      :: estrutura(~{:: #conteudoConta})}">
+
+        <body>
+
+            <div id="conteudoConta">
+
+                <h1>Criar Conta Poupança</h1>
+
+                <p th:text="|Cliente: ${cliente.nome}|"></p>
+
+                <form th:action="@{/criarpoupanca}" method="POST">
+
+                    <input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
+
+                    <button type="submit" class="btn btn-success">
+
+                        Confirmar Criação
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </body>
+
+        </html>

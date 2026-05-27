@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.ifms.lp3spring.model.conta.ContaModel;
+import com.ifms.lp3spring.model.conta.PoupancaModel;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -36,6 +37,13 @@ public class ClienteModel extends PessoaModel {
         this.contas.remove(conta);
         conta.setCliente(null);
     }
+
+    public boolean getPossuiPoupanca() {
+    return contas.stream()
+            .anyMatch(conta ->
+                    conta instanceof
+                            PoupancaModel);
+}
 
     public double getRenda() { return renda; }
     public void setRenda(double renda) { this.renda = renda; }
