@@ -30,4 +30,18 @@ public class CartaoService {
                 limite);
         conta.adicionarCartao(cartao);
     }
+
+    public void criarCartaoDebito(CorrenteModel conta) {
+        Random random = new Random();
+        String numero = "5000" + (1000 + random.nextInt(9000));
+        String cvv = String.valueOf(100 + random.nextInt(900));
+
+        CreditoModel cartao = new CreditoModel(
+                LocalDate.now().plusYears(5),
+                cvv,
+                numero,
+                conta,
+                0); // Limite zero para cartão de débito
+        conta.adicionarCartao(cartao);
+    }
 }

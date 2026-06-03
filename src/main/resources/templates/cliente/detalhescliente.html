@@ -189,9 +189,15 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Criar Cartao de Debito -->
+                    <a th:href="@{/criarCartaoDebito/{id}>(id=${cliente.idPessoa})}" class="btn btn-ifms-success mt-2 w-100 fw-medium">
+                        Criar Cartão de Débito
+                    </a>
                 </div>
             </div>
         </div>
+
+   
 
         <!-- Operações Bancárias -->
         <div class="mb-4">
@@ -236,6 +242,9 @@
             </div>
         </div>
 
+        <!-- Botao de Voltar -->
+        <div class="d-flex justify-content-end">
+            <a th:href="@{/buscarcliente}" class="btn btn-secondary fw-medium">Voltar à Lista de Clientes</a>
     </div>
 
     <!-- Bootstrap Bundle JS (opcional) -->
