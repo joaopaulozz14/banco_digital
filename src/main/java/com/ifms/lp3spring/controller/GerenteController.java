@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ifms.lp3spring.model.pessoa.GerenteModel;
 import com.ifms.lp3spring.service.GerenteService;
 
+import jakarta.persistence.Transient;
 import jakarta.validation.Valid;
 
 @Controller
@@ -21,6 +22,9 @@ public class GerenteController {
 	@Autowired
 	private GerenteService gerenteService;
 
+	@Transient
+	private Long idGerente;
+	
 	@GetMapping("/salvargerente")
 	public ModelAndView getSalvar() {
 

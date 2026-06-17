@@ -22,6 +22,10 @@ public class ClienteModel extends PessoaModel {
     
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ContaModel> contas = new ArrayList<>();
+    
+    @ManyToOne
+    @JoinColumn(name = "id_gerente")
+    private GerenteModel gerente;
 
     public ClienteModel() {}
 
@@ -46,6 +50,14 @@ public class ClienteModel extends PessoaModel {
                     conta instanceof
                             PoupancaModel);
 }
+    
+    public GerenteModel getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(GerenteModel gerente) {
+        this.gerente = gerente;
+    }
     
     @Transient
     public boolean getPossuiCartaoDebito() {

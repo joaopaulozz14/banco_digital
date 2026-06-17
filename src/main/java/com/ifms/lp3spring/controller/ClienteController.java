@@ -14,11 +14,14 @@ import com.ifms.lp3spring.model.pessoa.ClienteModel;
 import com.ifms.lp3spring.service.ClienteService;
 
 import jakarta.validation.Valid;
-
+import com.ifms.lp3spring.service.GerenteService;
 @Controller
 public class ClienteController {
 	@Autowired
 	ClienteService clienteService;
+	
+	@Autowired
+	GerenteService gerenteService;
 
 	// Listagem de clientes
 	@GetMapping("/buscarcliente")
@@ -35,8 +38,15 @@ public class ClienteController {
 	
 	// Mostra o formulario para salvar cliente
 	@GetMapping("/salvarcliente")
-	public ModelAndView getSalvar() {
-		return new ModelAndView("cliente/salvarcliente", "cliente", new ClienteModel());
+	public ModelAndView salvarCliente() throws Exception {
+
+	    ModelAndView mv =
+	            new ModelAndView("cliente/salvarcliente");
+
+	    mv.addObject("cliente", new ClienteModel());
+	    mv.addObject("gerentes", gerenteService.listarTodos());
+
+	    return mv;
 	}
 	
 	// Processa acao de salvar
@@ -122,6 +132,10 @@ public class ClienteController {
                 "limiteTotal",
                 clienteService.calcularLimiteTotal(cliente)
         );
+        mv.addObject(
+        	    "gerentes",
+        	    gerenteService.listarTodos()
+        	);
 
         return mv;
         
