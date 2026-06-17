@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Table(name = "cartao_debito")
 public class DebitoModel extends CartaoModel {
 
-    protected DebitoModel() {
+    public DebitoModel() {
         super();
     }
 

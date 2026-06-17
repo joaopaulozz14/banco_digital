@@ -27,8 +27,16 @@ public class ContaService {
 
     public void depositar(Long idConta, double valor) throws Exception {
 
+        if(valor <= 0) {
+            throw new Exception("Valor inválido");
+        }
+
+        if(valor > 10000) {
+            throw new Exception("Depósito máximo permitido: R$ 10.000");
+        }
+
         ContaModel conta = contaRepository.findById(idConta)
-                .orElseThrow(() -> new Exception("Conta não encontrada"));
+                .orElseThrow();
 
         conta.depositar(valor);
 

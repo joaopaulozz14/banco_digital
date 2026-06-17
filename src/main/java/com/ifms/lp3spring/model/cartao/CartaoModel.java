@@ -46,6 +46,19 @@ public abstract class CartaoModel { // Alterado para abstract para nao permitir 
         this.numero = numero;
         this.conta = conta;
     }
+    
+    @Transient
+    public String getTipoCartao() {
+        if(this instanceof CreditoModel) {
+            return "Crédito";
+        }
+
+        if(this instanceof DebitoModel) {
+            return "Débito";
+        }
+
+        return "Cartão";
+    }
 
     // GETTERS E SETTERS
     public Long getIdCartao() { return idCartao; }

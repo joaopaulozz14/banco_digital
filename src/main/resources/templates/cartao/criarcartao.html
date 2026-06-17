@@ -1,47 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layoutprincipal :: estrutura(~{:: #conteudoCartao})}">
 
 <body>
-    <!DOCTYPE html>
 
-    <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutprincipal
-      :: estrutura(~{:: #conteudoConta})}">
+<div id="conteudoCartao">
 
-    <body>
+    <h2>Emitir Cartão de Débito</h2>
 
-        <!DOCTYPE html>
+    <p>
+        Será criado um cartão de débito associado à conta poupança do cliente.
+    </p>
 
-        <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutprincipal
-      :: estrutura(~{:: #conteudoConta})}">
+    <form th:action="@{/criarcartao/{id}(id=${idCliente})}"
+          method="post">
 
-        <body>
+        <button type="submit"
+                class="btn btn-success">
 
-            <div id="conteudoConta">
+            Confirmar Emissão
 
-                <h1>Criar Cartão de Débito</h1>
+        </button>
 
-                <p th:text="|Cliente: ${cliente.nome}|"></p>
+    </form>
 
-                <form th:action="@{/criarpoupanca}" method="POST">
+</div>
 
-                    <input type="hidden" name="idCliente" th:value="${cliente.idPessoa}" />
-
-                    <button type="submit" class="btn btn-success">
-
-                        Confirmar Criação
-
-                    </button>
-
-                </form>
-
-            </div>
-
-        </body>
-
-        </html>
+</body>
+</html>

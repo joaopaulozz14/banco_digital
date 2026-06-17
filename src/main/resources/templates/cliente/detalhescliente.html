@@ -81,6 +81,7 @@
 
 <body class="bg-light">
 
+	<!-- Conteúdo Principal -->
     <div id="conteudoDetalhes" class="container py-4">
 
         <!-- Cabeçalho -->
@@ -126,18 +127,11 @@
                             <th>Saldo Atual</th>
                             <th class="pe-4">Limite de Crédito</th>
                             <th>
-
                                 <div th:if="${!cliente.possuiPoupanca}">
-
                                     <a th:href="@{/criarpoupanca/{id}
                                     (id=${cliente.idPessoa})}" class="btn btn-primary">
-
-                                        Criar Conta Poupança
-
-                                    </a>
-
-                                </div>
-                                
+                                        Criar Conta Poupança</a>
+                                </div> 
                             </th>
                         </tr>
                     </thead>
@@ -160,6 +154,16 @@
                     <div class="card text-white shadow cartao-ifms" th:each="cartao : ${conta.cartoes}">
                         <div class="card-body p-4 d-flex flex-column justify-content-between"
                             style="min-height: 200px;">
+							<!-- Tipo do Cartão -->
+							<div>
+							    <small class="text-uppercase text-white-50 d-block">
+							        Tipo
+							    </small>
+
+							    <span th:text="${cartao.tipoCartao}">
+							        Crédito
+							    </span>
+							</div>
                             <!-- Topo do Cartão -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold tracking-wide fs-5 text-white">IFMS <span
@@ -180,24 +184,30 @@
                                         style="font-size: 0.65rem;">Validade</small>
                                     <span class="fw-semibold small" th:text="${cartao.validade}">2030-05-01</span>
                                 </div>
-                                <div class="text-end" th:if="${cartao.limite != null}">
-                                    <small class="text-uppercase text-white-50 d-block"
-                                        style="font-size: 0.65rem;">Limite</small>
-                                    <span class="fw-bold text-white small" th:text="|R$ ${cartao.limite}|">R$
-                                        1500</span>
+								<div class="text-end"
+								     th:if="${cartao.tipoCartao == 'Crédito'}">                                
+									 <small class="text-uppercase text-white-50 d-block"
+                                        style="font-size: 0.65rem;">Limite
+										</small>
+                                    <span class="fw-bold text-white small" 
+										th:text="|R$ ${cartao.limite}|">
+										R$1500
+									</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Criar Cartao de Debito -->
-                    <a th:href="@{/criarCartaoDebito/{id}>(id=${cliente.idPessoa})}" class="btn btn-ifms-success mt-2 w-100 fw-medium">
-                        Criar Cartão de Débito
-                    </a>
                 </div>
+				
+				<!-- Criar Cartao de Debito -->
+				<div th:if="${cliente.possuiPoupanca and !cliente.possuiCartaoDebito}">
+				    <a th:href="@{/criarcartao/{id}(id=${cliente.idPessoa})}"
+				       class="btn btn-ifms-success">
+				        Emitir Cartão de Débito
+				    </a>
+				</div>
             </div>
         </div>
-
-   
 
         <!-- Operações Bancárias -->
         <div class="mb-4">
@@ -245,6 +255,7 @@
         <!-- Botao de Voltar -->
         <div class="d-flex justify-content-end">
             <a th:href="@{/buscarcliente}" class="btn btn-secondary fw-medium">Voltar à Lista de Clientes</a>
+			</div>
     </div>
 
     <!-- Bootstrap Bundle JS (opcional) -->

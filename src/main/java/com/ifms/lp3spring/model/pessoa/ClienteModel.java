@@ -3,6 +3,8 @@ package com.ifms.lp3spring.model.pessoa;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.ifms.lp3spring.model.cartao.DebitoModel;
 import com.ifms.lp3spring.model.conta.ContaModel;
 import com.ifms.lp3spring.model.conta.PoupancaModel;
 
@@ -44,6 +46,18 @@ public class ClienteModel extends PessoaModel {
                     conta instanceof
                             PoupancaModel);
 }
+    
+    @Transient
+    public boolean getPossuiCartaoDebito() {
+
+        return contas.stream()
+
+                .flatMap(conta ->
+                        conta.getCartoes().stream())
+
+                .anyMatch(cartao ->
+                        cartao instanceof DebitoModel);
+    }
 
     public double getRenda() { return renda; }
     public void setRenda(double renda) { this.renda = renda; }
