@@ -12,10 +12,10 @@ import jakarta.validation.constraints.Positive;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "idPessoa")
-@Table(name = "gerente") // Corrigido de "professor" para "gerente"
+@Table(name = "gerente")
 public class GerenteModel extends PessoaModel {
 
-    @Positive(message = "O salário deve ser maior que zero") // Melhor que @NotNull para valores numéricos
+    @Positive(message = "O salário deve ser maior que zero")
     @Column(name = "salarioGerente")
     private double salario;
 

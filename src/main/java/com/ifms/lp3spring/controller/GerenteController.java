@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,7 +25,7 @@ public class GerenteController {
 
 	@Transient
 	private Long idGerente;
-	
+
 	@GetMapping("/salvargerente")
 	public ModelAndView getSalvar() {
 
@@ -94,6 +95,19 @@ public class GerenteController {
 			e.printStackTrace();
 		}
 		return "redirect:/buscargerente";
+	}
+
+	@GetMapping("/detalhesgerente/{id}")
+	public ModelAndView detalhesGerente(@PathVariable Long id)
+			throws Exception {
+
+		GerenteModel gerente = gerenteService.buscarId(id);
+
+		ModelAndView mv = new ModelAndView("gerente/detalhesgerente");
+
+		mv.addObject("gerente", gerente);
+
+		return mv;
 	}
 
 }
