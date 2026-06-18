@@ -11,137 +11,140 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ifms.lp3spring.model.pessoa.ClienteModel;
+import com.ifms.lp3spring.model.pessoa.GerenteModel;
 import com.ifms.lp3spring.service.ClienteService;
 
 import jakarta.validation.Valid;
 import com.ifms.lp3spring.service.GerenteService;
+
 @Controller
 public class ClienteController {
 	@Autowired
 	ClienteService clienteService;
-	
+
 	@Autowired
 	GerenteService gerenteService;
 
 	// Listagem de clientes
 	@GetMapping("/buscarcliente")
 	public ModelAndView listar() throws Exception {
-	    List<ClienteModel> clientes =
-	            clienteService.listarTodos();
+		List<ClienteModel> clientes = clienteService.listarTodos();
 
-	    return new ModelAndView(
-	            "cliente/buscarcliente",
-	            "clientes",
-	            clientes
-	    );
+		return new ModelAndView(
+				"cliente/buscarcliente",
+				"clientes",
+				clientes);
 	}
-	
-	// Mostra o formulario para salvar cliente
+
+	// Mostra o formulario para salvar cliente (se nao tiver gerentes, redireciona para salvar gerente)
 	@GetMapping("/salvarcliente")
-	public ModelAndView salvarCliente() throws Exception {
+	public ModelAndView salvarCliente()
+			throws Exception {
 
-	    ModelAndView mv =
-	            new ModelAndView("cliente/salvarcliente");
+		List<GerenteModel> gerentes = gerenteService.listarTodos();
 
-	    mv.addObject("cliente", new ClienteModel());
-	    mv.addObject("gerentes", gerenteService.listarTodos());
+		if (gerentes.isEmpty()) {
 
-	    return mv;
+			return new ModelAndView(
+					"redirect:/salvargerente");
+		}
+
+		ModelAndView mv = new ModelAndView("cliente/salvarcliente");
+
+		mv.addObject("cliente", new ClienteModel());
+		mv.addObject("gerentes", gerentes);
+
+		return mv;
 	}
-	
+
 	// Processa acao de salvar
 	@PostMapping("/salvarcliente")
 	public String postSalvar(
-	        @Valid @ModelAttribute("cliente") ClienteModel cliente,
-	        BindingResult result) {
+			@Valid @ModelAttribute("cliente") ClienteModel cliente,
+			BindingResult result) {
 
-	    if (result.hasErrors()) {
-	        return "cliente/salvarcliente";
-	    }
+		if (result.hasErrors()) {
+			return "cliente/salvarcliente";
+		}
 
-	    try {
+		try {
 
-	        clienteService.inserir(cliente);
+			clienteService.inserir(cliente);
 
-	        return "redirect:/buscarcliente";
+			return "redirect:/buscarcliente";
 
-	    } catch (Exception e) {
+		} catch (Exception e) {
 
-	        result.reject("erro", e.getMessage());
+			result.reject("erro", e.getMessage());
 
-	        return "cliente/salvarcliente";
-	    }
+			return "cliente/salvarcliente";
+		}
 	}
-	
-	//Remover cliente pelo id;
-    @GetMapping("/removercliente/{id}")
-    public String deletar(@ModelAttribute("id") Long id) {
-        try {
+
+	// Remover cliente pelo id;
+	@GetMapping("/removercliente/{id}")
+	public String deletar(@ModelAttribute("id") Long id) {
+		try {
 			clienteService.remover(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        return "redirect:/buscarcliente";
-    }
-    
-    //Mostrar form de edicao
-    @GetMapping("/editarcliente/{id}")
-    public ModelAndView buscarPorId(@ModelAttribute("id") Long id) throws Exception {
-        ClienteModel cliente = clienteService.buscarId(id);
+		return "redirect:/buscarcliente";
+	}
 
-        if (cliente==null) {
-            cliente = new ClienteModel();
-        }
-        return new ModelAndView("/cliente/editarcliente", "cliente", cliente);
-    }
-    
-    //Processar edicao
-    @PostMapping("/editarcliente")
-    public String postEditar(@Valid @ModelAttribute("cliente") ClienteModel cliente, BindingResult result) {
-        if (result.hasErrors()) {
-            return "cliente/editarcliente";
-        }
-        
-        try {
+	// Mostrar form de edicao
+	@GetMapping("/editarcliente/{id}")
+	public ModelAndView buscarPorId(@ModelAttribute("id") Long id) throws Exception {
+		ClienteModel cliente = clienteService.buscarId(id);
+
+		if (cliente == null) {
+			cliente = new ClienteModel();
+		}
+		return new ModelAndView("/cliente/editarcliente", "cliente", cliente);
+	}
+
+	// Processar edicao
+	@PostMapping("/editarcliente")
+	public String postEditar(@Valid @ModelAttribute("cliente") ClienteModel cliente, BindingResult result) {
+		if (result.hasErrors()) {
+			return "cliente/editarcliente";
+		}
+
+		try {
 			clienteService.editar(cliente);
 		} catch (Exception e) {
-	        result.reject("erro", e.getMessage());
-	        return "cliente/editarcliente";
+			result.reject("erro", e.getMessage());
+			return "cliente/editarcliente";
 		}
-        return "redirect:/buscarcliente";
-    }
-    
-    //Mostrar Relacionamento
-    @GetMapping("/detalhescliente/{id}")
-    public ModelAndView detalhesCliente(@ModelAttribute("id") Long id) throws Exception {
+		return "redirect:/buscarcliente";
+	}
 
-        ClienteModel cliente = clienteService.buscarId(id);
+	// Mostrar Relacionamento
+	@GetMapping("/detalhescliente/{id}")
+	public ModelAndView detalhesCliente(@ModelAttribute("id") Long id) throws Exception {
 
-        ModelAndView mv =
-                new ModelAndView(
-                        "cliente/detalhescliente"
-                );
+		ClienteModel cliente = clienteService.buscarId(id);
 
-        mv.addObject("cliente", cliente);
-        mv.addObject(
-                "saldoTotal",
-                clienteService.calcularSaldoTotal(cliente)
-        );
+		ModelAndView mv = new ModelAndView(
+				"cliente/detalhescliente");
 
-        mv.addObject(
-                "limiteTotal",
-                clienteService.calcularLimiteTotal(cliente)
-        );
-        mv.addObject(
-        	    "gerentes",
-        	    gerenteService.listarTodos()
-        	);
+		mv.addObject("cliente", cliente);
+		mv.addObject(
+				"saldoTotal",
+				clienteService.calcularSaldoTotal(cliente));
 
-        return mv;
-        
-        // Fluxo: mapeamento em detalhescliente/id -> ModelAndView (Recebe parametros: 
-        // 'arquivo html', 'dados enviados') -> Usa mv.addObject para chamar services especificas
-    }
+		mv.addObject(
+				"limiteTotal",
+				clienteService.calcularLimiteTotal(cliente));
+		mv.addObject(
+				"gerentes",
+				gerenteService.listarTodos());
 
+		return mv;
+
+		// Fluxo: mapeamento em detalhescliente/id -> ModelAndView (Recebe parametros:
+		// 'arquivo html', 'dados enviados') -> Usa mv.addObject para chamar services
+		// especificas
+	}
 
 }
